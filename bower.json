@@ -1,0 +1,29 @@
+{
+  "name": "ga-localstorage",
+  "main": "GALocalStorage.js",
+  "homepage": "https://github.com/ggendre/GALocalStorage",
+  "authors": [
+    "ggendre"
+  ],
+  "description": "GALocalstorage is a Modified version or Google Analytics for Pokki without using pokki at all",
+  "moduleType": [
+    "globals"
+  ],
+  "keywords": [
+    "galocalstorage",
+    "ga-localstorage",
+    "ga",
+    "localstorage",
+    "google",
+    "analytics",
+    "pokki"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
