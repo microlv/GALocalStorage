@@ -23,7 +23,9 @@
  *   ga_storage._trackEvent('category', 'action', 'label', 'value');
  */
 
-(function () {
+(function (root) {
+	'use strict';
+
 	var IS_DEBUG = false;
 
 	var LocalStorage = function (key, initial_value) {
@@ -48,7 +50,7 @@
 		};
 	};
 
-	ga_storage = new function () {
+	var ga_storage = new function () {
 		var ga_url = 'http://www.google-analytics.com';
 		var ga_ssl_url = 'https://ssl.google-analytics.com';
 		var last_url = '/'; // used to keep track of last page view logged to pass forward to subsequent events tracked
@@ -142,31 +144,28 @@
 		}
 
 		function gainit() {
-			c_session = (new Date()).getTime();
-			if (IS_DEBUG) console.log('gainit', c_session);
+		  c_session = (new Date()).getTime();
+		  if (IS_DEBUG) console.log('gainit', c_session);
 
-			request_cnt = 0;
-			utmhid = get_random();
+		  request_cnt = 0;
+		  utmhid = get_random();
+		  if (!uid._get()) {
+		    uid._set(rand(10000000, 99999999));
+		    uid_rand._set(rand(1000000000, 2147483647));
+		  }
 
-			if (uid._get() == null) {
-				uid._set(rand(10000000, 99999999));
-				uid_rand._set(rand(1000000000, 2147483647));
-			}
+		  if (!session_cnt._get()) {
+		    session_cnt._set(1);
+		  } else {
+		    session_cnt._set(parseInt(session_cnt._get()) + 1);
+		  }
 
-			if (session_cnt._get() == null) {
-				session_cnt._set(1);
-			}
-			else {
-				session_cnt._set(parseInt(session_cnt._get()) + 1);
-			}
-
-			if (f_session._get() == null) {
-				f_session._set(c_session);
-			}
-			if (l_session._get() == null) {
-				l_session._set(c_session);
-			}
-
+		  if (!f_session._get()) {
+		    f_session._set(c_session);
+		  }
+		  if (!l_session._get()) {
+		    l_session._set(c_session);
+		  }
 		}
 
 		// public
@@ -393,6 +392,6 @@
 			var img = new Image();
 			img.src = url;
 		};
-
 	};
-})();
+	root.ga_storage = ga_storage;
+})(this);
